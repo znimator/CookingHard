@@ -1,0 +1,46 @@
+local rp = game:GetService("ReplicatedStorage")
+local ss = game:GetService("ServerStorage")
+
+local fxHandler = require(ss.Handlers.FX)
+
+local effect = {}
+effect.__index = effect
+
+local base = require(script.Parent._effect)
+setmetatable(effect, base)
+
+local default = {
+	Damage = 1;	
+}
+
+function effect.new(target, cfg: {[any] : any}?)
+    cfg = setmetatable(cfg or {}, {__index = default})
+	
+	local self = setmetatable(base.new(target), effect)
+
+	self.Name = script.Name
+	
+	self.Damage = cfg.Damage
+	
+	self.Particle = script.FireParticle:Clone()
+	self.Janitor:Add(self.Particle)
+
+	return self
+end
+
+function effect:Update(dt)
+	if os.clock() - self.LastUpdate > 0.5 then
+		self.LastUpdate = os.clock()
+		fxHandler:FXAll("Hit", {Model = self.Target.Model, Color = Color3.fromRGB(255, 149, 0)})
+		fxHandler:FXAll("PlaySound", {Sound = rp.Assets.Sounds.hitmarker, Position = self.Target.Model:GetPivot().Position})
+		fxHandler:FXAll("DamageIndicator", {Color = Color3.fromRGB(255, 128, 0), Position = self.Target.Model:GetPivot().Position, Damage = self.Damage})
+		self.Target:TakeDamage(self.Damage)
+	end
+end
+
+function effect:Apply()
+	self.Particle.Parent = self.Target.Model.PrimaryPart
+	fxHandler:FXAll("PlaySound", {Sound = rp.Assets.Sounds.Flame, Position = self.Target.Model:GetPivot().Position})
+end
+
+return effect

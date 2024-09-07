@@ -6,20 +6,46 @@
     "ReplicatedStorage": {
       "Shared": {
         "$path": "src/shared"
-      }
-    },
+      },
 
-    "ServerScriptService": {
-      "Server": {
-        "$path": "src/server"
+      "Classes": {
+        "$path": "src/Game/Classes"
+      },
+
+      "Handlers": {
+        "$path": "src/client/handlers"
+      },
+
+      "Entities": {
+        "$path": "src/Game/Entities"
+      },
+
+      "StatusEffects": {
+        "$path": "src/Game/StatusEffects"
+      },
+
+      "Packages": {
+        "$path": "Packages"
       }
     },
 
     "StarterPlayer": {
       "StarterPlayerScripts": {
         "Client": {
-          "$path": "src/client"
+          "$path": "src/client/loader"
         }
+      }
+    },
+
+    "ServerScriptService": {
+      "Server": {
+        "$path": "src/server/loader"
+      }
+    },
+
+    "ServerStorage": {
+      "Handlers": {
+        "$path": "src/server/handlers"
       }
     },
 
