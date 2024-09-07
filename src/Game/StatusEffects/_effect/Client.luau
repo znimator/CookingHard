@@ -30,12 +30,14 @@ export type ClientEffect = {
     Destroy: (self: ClientEffect) -> ();
 }
 
-function _client_effect.new(entity: EntityHandler.Entity, config: {[any]: any}?)
+function _client_effect.new(entity: EntityHandler.Entity, config: {[any]: any}?) : ClientEffect
     local self = setmetatable({}, _client_effect)
 
-    self.Config = setmetatable(config or {}, default_config)
+    self.Config = setmetatable(config or {}, {__index = default_config})
 
     self.Name = script.Parent.Name
+
+    print(plr)
 
     self.IsPlayer = entity.Model == plr.Character
 

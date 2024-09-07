@@ -12,6 +12,7 @@ function skill_config.new() : SkillConfig
     local self = setmetatable({}, skill_config)
 
     self.Cooldown = 1;
+    self.Damage = 10;
 
     self.Key = Enum.KeyCode.F;
 

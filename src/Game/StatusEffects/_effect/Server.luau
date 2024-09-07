@@ -26,12 +26,12 @@ export type ServerEffect = {
     Destroy: (self: ServerEffect) -> (),
 }
 
-function _server_effect.new(entity: EntityHandler.Entity, config: {[any]: any}?)
+function _server_effect.new(entity: EntityHandler.Entity, config: {[any]: any}?) : ServerEffect
     local self = setmetatable({}, _server_effect)
 
     self.Name = script.Parent.Name
 
-    self.Config = setmetatable(config or {}, default_config)
+    self.Config = setmetatable(config or {}, {__index = default_config})
 
     self.Target = entity
     self.LastUpdate = os.clock()

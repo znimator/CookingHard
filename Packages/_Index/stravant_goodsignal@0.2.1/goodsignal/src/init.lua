@@ -22,7 +22,6 @@
 -- Authors:                                                                   --
 --   stravant - July 31st, 2021 - Created the file.                           --
 --------------------------------------------------------------------------------
---!nocheck
 
 -- The currently idle thread to run the next handler on
 local freeRunnerThread = nil
@@ -40,7 +39,7 @@ local function acquireRunnerThreadAndCallEventHandler(fn, ...)
 	freeRunnerThread = acquiredRunnerThread
 end
 
--- Coroutine runner that we create coroutines of. The coroutine can be
+-- Coroutine runner that we create coroutines of. The coroutine can be 
 -- repeatedly resumed with functions to run followed by the argument to run
 -- them with.
 local function runEventHandlerInFreeThread()
@@ -89,33 +88,22 @@ end
 
 -- Make Connection strict
 setmetatable(Connection, {
-	__index = function(_, key)
+	__index = function(tb, key)
 		error(("Attempt to get Connection::%s (not a valid member)"):format(tostring(key)), 2)
 	end,
-	__newindex = function(_, key)
+	__newindex = function(tb, key, value)
 		error(("Attempt to set Connection::%s (not a valid member)"):format(tostring(key)), 2)
-	end,
+	end
 })
-
-export type Connection = {
-	Disconnect: (self: Connection) -> (),
-}
-
-export type Signal<T...> = {
-	Connect: (self: Signal<T...>, callback: (T...) -> ()) -> Connection,
-	Once: (self: Signal<T...>, callback: (T...) -> ()) -> Connection,
-	Fire: (self: Signal<T...>, T...) -> (),
-	Wait: (self: Signal<T...>) -> (),
-}
 
 -- Signal class
 local Signal = {}
 Signal.__index = Signal
 
-function Signal.new<T...>(): Signal<T...>
+function Signal.new()
 	return setmetatable({
 		_handlerListHead = false,
-	}, Signal) :: any
+	}, Signal)
 end
 
 function Signal:Connect(fn)
@@ -158,7 +146,7 @@ end
 -- a Signal:Connect() which disconnects itself.
 function Signal:Wait()
 	local waitingCoroutine = coroutine.running()
-	local cn
+	local cn;
 	cn = self:Connect(function(...)
 		cn:Disconnect()
 		task.spawn(waitingCoroutine, ...)
@@ -169,7 +157,7 @@ end
 -- Implement Signal:Once() in terms of a connection which disconnects
 -- itself before running the handler.
 function Signal:Once(fn)
-	local cn
+	local cn;
 	cn = self:Connect(function(...)
 		if cn._connected then
 			cn:Disconnect()
@@ -181,12 +169,12 @@ end
 
 -- Make signal strict
 setmetatable(Signal, {
-	__index = function(_, key)
+	__index = function(tb, key)
 		error(("Attempt to get Signal::%s (not a valid member)"):format(tostring(key)), 2)
 	end,
-	__newindex = function(_, key)
+	__newindex = function(tb, key, value)
 		error(("Attempt to set Signal::%s (not a valid member)"):format(tostring(key)), 2)
-	end,
+	end
 })
 
 return Signal

@@ -14,7 +14,7 @@ local function VisualiseHitbox(size: Vector3, cf: CFrame)
     part.Anchored = true
     part.CanCollide = false
     part.Massless = true
-    part.Transparency = 0.75
+    part.Transparency = 0.85
     part.Material = Enum.Material.Neon
     part.Color = Color3.fromRGB(255, 0, 0)
     part.Size = size

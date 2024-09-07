@@ -10,6 +10,8 @@ setmetatable(skill_config, base_config)
 function skill_config.new()
     local self = setmetatable(base_config.new(), skill_config)
 
+    self.Damage = 10
+
     return self
 end
 

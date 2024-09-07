@@ -23,20 +23,22 @@ function ServerStatusHandler:Init()
 	end
 
 	rs.Heartbeat:Connect(function(deltaTime)
-		local timestamp = os.clock()
-		for entity, effects in self.AffectedEntities do
-			for index, effect in effects do
+		local timestamp = os.clock()		
+		for model, effects in self.AffectedEntities do
 
-				if timestamp - effect.ApplyTimestamp >= effect.Config.Duration then
+			for index, effect in effects do
+				
+
+				if effect.ApplyTimestamp ~= nil and timestamp - effect.ApplyTimestamp >= effect.Config.Duration then
+					effects[index] = nil
 					effect:Destroy()
 
-					table.remove(self.AffectedEntities[entity.Model], index)
-					Remotes.Remove:FireAllClients(entity.Model, effect.Name)
+					Remotes.RemoveEffect:FireAllClients(model, effect.Name)
+
 					continue
 				end
 
 				effect:Update(deltaTime)
-				effect.LastUpdate = os.clock()
 			end
 		end
 	end)
@@ -74,7 +76,7 @@ function ServerStatusHandler:Apply(entity: entityHandler.Entity, name: string, c
 		self.AffectedEntities[entity.Model] = {}
 	end
 
-	table.insert(self.AffectedEntities[entity.Model], name)
+	table.insert(self.AffectedEntities[entity.Model], effect)
 	Remotes.Apply:FireAllClients(entity.Model, name, config)
 end
 

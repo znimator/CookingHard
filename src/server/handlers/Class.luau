@@ -7,6 +7,14 @@ local Remotes = rp.Handlers.Class.Remotes
 
 local EntityHandler = require(ss.Handlers.Entity)
 
+local base_class = require(rp.Classes._class.Server)
+
+export type Class = base_class.ServerClass
+
+function ClassHandler:GetClass(plr: Player) : Class
+    return self.PlayerClasses[plr]
+end
+
 function ClassHandler:Load(plr: Player, name: string, skin: string?)
     if self._classes[name] == nil then
         warn("Unknown class: " .. name)

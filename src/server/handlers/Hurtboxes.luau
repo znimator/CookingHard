@@ -9,7 +9,7 @@ local function CreateHurtbox()
     part.CanCollide = false
     part.Massless = true
 
-    part.Transparency = 0.75
+    part.Transparency = 0.85
     part.Material = Enum.Material.Neon
     part.Color = Color3.fromRGB(0, 255, 0)
     part:AddTag("Hurtbox")

@@ -1,5 +1,6 @@
 local rp = game:GetService("ReplicatedStorage")
 local uis = game:GetService("UserInputService")
+local ss = game:GetService("ServerStorage")
 
 local Remotes = script.Parent.Remotes
 

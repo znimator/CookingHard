@@ -8,8 +8,16 @@ local Remotes = script.Remotes
 
 local EntityHandler = require(rp.Handlers.Entity)
 
+local base_class = require(rp.Classes._class.Client)
+
+export type Class = base_class.ClientClass
+
 function ClassHandler:RequestLoad(name: string, skin: string?)
     Remotes.RequestChange:FireServer(name, skin)
+end
+
+function ClassHandler:GetClass() : Class
+    return self.PlayerClass
 end
 
 function ClassHandler:Load(name: string, skin: string?)

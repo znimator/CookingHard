@@ -20,6 +20,10 @@
         "$path": "src/Game/Entities"
       },
 
+      "Libs": {
+        "$path": "src/Shared/Libs"
+      },
+
       "StatusEffects": {
         "$path": "src/Game/StatusEffects"
       },

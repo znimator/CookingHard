@@ -126,11 +126,11 @@ function handler:LoadPreview()
 		highlight.FillTransparency = 0
 		
 		self.Scope:Hydrate(highlight) {
-			FillColor = self.Scope:Tween(self.Scope:Computed(function()
-				return Peek(self.IsUnlocking) and Color3.fromRGB(255, 255, 255) or Color3.fromRGB(0, 0, 0)
+			FillColor = self.Scope:Tween(self.Scope:Computed(function(use, scope)
+				return use(self.IsUnlocking) and Color3.fromRGB(255, 255, 255) or Color3.fromRGB(0, 0, 0)
 			end), TweenInfo.new(1)),
-			FillTransparency = self.Scope:Tween(self.Scope:Computed(function()
-				return Peek(self.ClassInfo[module].Locked) and 0 or 1
+			FillTransparency = self.Scope:Tween(self.Scope:Computed(function(use, scope)
+				return use(self.ClassInfo[module].Locked) and 0 or 1
 			end), TweenInfo.new(1))
 		}
 	end
@@ -384,13 +384,13 @@ function handler:Init()
 				ClassLocked = self.Scope:Hydrate(_template.Canvas.ClassLocked) {
 					[Children] = {
 						ImageLabel = self.Scope:Hydrate(_template.Canvas.ClassLocked.ImageLabel) {
-							Visible = self.Scope:Computed(function()
-								return Peek(self.ClassInfo[v].Locked)
+							Visible = self.Scope:Computed(function(use, scope)
+								return use(self.ClassInfo[v].Locked)
 							end)
 						}
 					},
-					Transparency = self.Scope:Tween(self.Scope:Computed(function()
-						return (Peek(self.SelectedClass) == i and Peek(self.ClassInfo[v].Locked) == false) and 1 or 0.25
+					Transparency = self.Scope:Tween(self.Scope:Computed(function(use, scope)
+						return (use(self.SelectedClass) == i and use(self.ClassInfo[v].Locked) == false) and 1 or 0.25
 					end), TweenInfo.new(0.15))
 				},
 				Button = self.Scope:Hydrate(_template.Canvas.Button) {
@@ -399,13 +399,13 @@ function handler:Init()
 					end,
 				},
 				Selected = self.Scope:Hydrate(_template.Canvas.Selected) {
-					ImageTransparency = self.Scope:Tween(self.Scope:Computed(function()
-						return Peek(self.SelectedClass) == i and 0 or 1
+					ImageTransparency = self.Scope:Tween(self.Scope:Computed(function(use, scope)
+						return use(self.SelectedClass) == i and 0 or 1
 					end), TweenInfo.new(0.15))
 				}
 			},
-			Size = self.Scope:Spring(self.Scope:Computed(function()
-				return Peek(self.SelectedClass) == i and UDim2.fromScale(1, 1) or UDim2.fromScale(0.9, 0.9)
+			Size = self.Scope:Spring(self.Scope:Computed(function(use, scope)
+				return use(self.SelectedClass) == i and UDim2.fromScale(1, 1) or UDim2.fromScale(0.9, 0.9)
 			end), 35, 0.75)
 		}
 	end
@@ -415,8 +415,8 @@ function handler:Init()
 	}
 	
 	self.Scope:Hydrate(UI.Main.List.Classes) {
-		Position = self.Scope:Spring(self.Scope:Computed(function()
-			return UDim2.fromScale(0.5 - (0.05 * (Peek(self.SelectedClass) - 1)), 0.5)
+		Position = self.Scope:Spring(self.Scope:Computed(function(use, scope)
+			return UDim2.fromScale(0.5 - (0.05 * (use(self.SelectedClass) - 1)), 0.5)
 		end), 35, 0.75)
 	}
 	
